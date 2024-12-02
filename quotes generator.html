@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Times new roman', serif;
+            box-sizing: border-box;
+            background-color: rgb(173, 191, 244);
+            width: 100%;
+            height: 100vh;
+            color: white;
+        }
+        .quotebox {
+            background: rgb(247, 249, 249);
+            border-radius: 10px;
+            width: 20%;
+            padding: 40px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            box-shadow: 0 10px 20px 0px rgb(185, 178, 178);
+            color: rgb(13, 110, 146);
+        }
+        .quotebox h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .borline {
+            border-bottom: 5px solid rgb(13, 110, 146);
+            margin-top: 30px;
+            margin-bottom: 50px;
+            margin-left: 170px;
+            margin-right: 170px;
+        }
+        .quotebox blockquote {
+            font-size: 26px;
+            min-height: 110px;
+            justify-content: space-around;
+        }
+        .quotebox blockquote::before, .quotebox blockquote::after {
+            content: '"';
+        }
+        .quotebox span {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            float: right;
+            position: relative;
+        }
+        .quotebox span::before {
+            content: "";
+            width: 20px;
+            height: 2px;
+            background: rgb(13, 110, 146);
+            position: absolute;
+            top: 50%;
+            left: -30px;
+        }
+        .but {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .but button {
+            background: rgb(13, 110, 146);
+            color: white;
+            border-radius: 25px;
+            border: 2px solid rgb(13, 110, 146);
+            width: 150px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .but img {
+            width: 15px;
+            height: 15px;
+            margin-right: 10px;
+        }
+        .but button:nth-child(2) {
+            background: transparent;
+            color: rgb(13, 110, 146);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quotebox">
+        <h2>Quote of the day</h2>
+        <div class="borline"></div>
+        <blockquote id="quote">Loading...</blockquote> <!-- quote content -->
+        <span id="author">Loading...</span> <!-- author name -->
+        <div class="but">
+            <button onclick="getQuote(apiurl)">New Quote</button>
+            <button onclick="tweet()"><img src="ximage.png">Tweet</button>
+        </div>
+    </div>
+
+    <script>
+        const apiurl = "https://api.quotable.io/random";
+        const quote = document.getElementById("quote");
+        const author = document.getElementById("author");
+
+        // Fetch a new quote from the API
+        async function getQuote(url) {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log(data);
+            quote.innerHTML = data.content;
+            author.innerHTML = data.author;
+        }
+
+        // Initial quote fetch
+        getQuote(apiurl);
+
+        // Function to share the quote on Twitter
+        function tweet() {
+            const tweetText = encodeURIComponent(`${quote.innerHTML} ---- by ${author.innerHTML}`);
+            window.open(
+                `https://twitter.com/intent/tweet?text=${tweetText}`,
+                "Tweet Window",
+                "width=600,height=300"
+            );
+        }
+    </script>
+
+</body>
+</html>
